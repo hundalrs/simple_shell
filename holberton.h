@@ -11,7 +11,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-int main();
+int main(int ac, char *av[], char *env[]);
 void create_instance();
 void main_shell();
 char **tokenizer (char **buffer);
