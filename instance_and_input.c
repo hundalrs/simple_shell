@@ -20,13 +20,13 @@ void main_shell()
 {
         char *buffer = NULL;
         size_t bufsize = 0;
-        char **_argv;
+	char **_argv;
 
         write(STDOUT_FILENO, "#cisfun$ ", 9);
 
         getline (&buffer, &bufsize, stdin);
 
-        tokenizer(&_argv, &buffer);
+        _argv = tokenizer(&buffer);
 
         _exec_process(_argv);
         wait(NULL);

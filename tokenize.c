@@ -1,36 +1,38 @@
 #include "holberton.h"
 
-void tokenizer (char ***_argv, char **buffer)
+char **tokenizer (char **buffer)
 {
         char *tok;
+	char **_argv;
         int i;
 
         tok = strtok (*buffer, " \n\t");
         if (tok == NULL)
                 perror ("Could not tokenize commands");
-        *_argv = malloc(sizeof(char *) * 2);
-        if (*_argv == NULL)
+        _argv = malloc(sizeof(char *) * 2);
+        if (_argv == NULL)
                 exit (0);
 
-        *_argv[0] = tok;
+        _argv[0] = tok;
         i = 1;
         while (tok != NULL)
         {
                 tok = strtok(NULL, " \n\t");
                 if (tok != NULL)
                 {
-			*_argv = realloc(*_argv, sizeof (char*) * (i + 2));
+			_argv = realloc(_argv, sizeof (char*) * (i + 2));
 			if (_argv == NULL)
                         {
                                 free (buffer);
                                 perror("Could not realloc");
                                 exit (0);
                         }
-                        *_argv[i] = tok;
+                        _argv[i] = tok;
                         i++;
                 }
         }
         _argv[i] = NULL;
+	return (_argv);
 }
 
 

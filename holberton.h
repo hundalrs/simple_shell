@@ -14,7 +14,7 @@
 int main();
 void create_instance();
 void main_shell();
-void tokenizer (char ***_argv, char **buffer);
+char **tokenizer (char **buffer);
 void _exec_process(char **argv);
 
 #endif
