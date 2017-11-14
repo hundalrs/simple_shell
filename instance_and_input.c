@@ -6,7 +6,7 @@ void create_instance()
 
         pid = fork();
         if (pid == 0)
-                main_shell();
+		main_shell();
         else if (pid == -1)
                 perror("Cannot fork process");
         else
@@ -28,7 +28,8 @@ void main_shell()
 
         _argv = tokenizer(&buffer);
 
-        _exec_process(_argv);
+	if (_argv[0] != NULL)
+		_exec_process(_argv);
         wait(NULL);
 
         free(buffer);
