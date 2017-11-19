@@ -64,11 +64,14 @@ void _exec_process(char *_arg, char **_args)
                 perror("Could not fork");
         if (pid == 0)
         {
-                if (execve(_arg, _args, NULL) == -2)
+                if (execve(_arg, _args, NULL) == -1)
                 {
                         perror("error in execute command");
                 }
                 exit(EXIT_FAILURE);
         }
-
+	else
+	{
+		wait(NULL);
+	}
 }

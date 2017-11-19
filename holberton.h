@@ -35,15 +35,14 @@ char *get_x_args(char **tmp_args, char *prog);
 char *getPathArgs(char *prog, char **environ);
 char *getKeyValue(char *key, char **environ);
 char *_strstr(char *haystack, char *needle);
-char *allocate_strings (int count, ...);
+char *_stralloc (int count, ...);
 int _strlen(char *s);
 int countToks(char *str, char *delim);
 extern char **environ;
 
 #define EXIT_SHELL 3
 #define DEFAULT 1
-#define USED_PATH 2
-#define NEED_PATH 4
 #define BUILTIN 5
+#define START_OVER 7
 
 #endif

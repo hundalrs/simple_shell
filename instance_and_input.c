@@ -1,37 +1,5 @@
 #include "holberton.h"
 
-void create_instance()
-{
-        pid_t pid;
-	int status;
-	size_t stat;
-
-        pid = fork();
-
-	if (pid == -1)
-	{
-		perror("Cannot fork process");
-		exit (EXIT_FAILURE);
-	}
-        if (pid == 0)
-	{
-		stat = main_shell();
-		switch (stat) {
-		case 3:
-			exit(0);
-			break;
-		default:
-			exit(1);
-		}
-	}
-	wait (&status);
-	stat = WEXITSTATUS (status);
-	if (stat)
-		create_instance();
-	else
-		return;
-}
-
 int main_shell()
 {
 	int i = 0;
@@ -52,6 +20,8 @@ int main_shell()
 	exit_check = getline (&buffer, &bufsize, stdin);
 	if (exit_check == -1)
 		stat = EXIT_SHELL;
+	if (exit_check == 1)
+		stat = START_OVER;
 
 	if (stat == DEFAULT)
 	{
@@ -71,38 +41,19 @@ int main_shell()
 
 	if (stat == DEFAULT)
 	{
-		//set stat = NEED_PATH or USED_PATH
-		stat = is_arg_ready(_argv[0]) ? NEED_PATH : USED_PATH;
+		if (access(_argv[0], X_OK) == -1)
+			path = getPathArgs(_argv[0], environ);
+		_exec_process(path ? path : _argv[0], _argv);
 	}
 
-	if (stat == NEED_PATH)
-	{
-		path = getPathArgs(_argv[0], environ);
-		stat = USED_PATH;
-	}
-	if (stat == USED_PATH)
-	{
-		//change this
-		_exec_process(path ? path : _argv[0], _argv);
-		wait(NULL);
-	}
-	if (path != NULL)
-		free(path);
-	if (buffer != NULL)
-		free(buffer);
-	if (_argv != NULL)
-		free(_argv);
+	if (stat == EXIT_SHELL)
+		write (STDOUT_FILENO, "\n", 1);
+
+	free(path);
+	free(buffer);
+	free(_argv);
 
 	return (stat);
-}
-
-int is_arg_ready (char *_argv)
-{
-	if (access(_argv, X_OK) == -1)
-		return (4);
-	else
-		return (2);
-
 }
 
 void _exiting(char**_argv)

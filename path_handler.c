@@ -3,14 +3,17 @@
 char *getPathArgs(char *prog, char **environ)
 {
 	char *tmp;
+	char *tmp_env;
 	char **tmp_args;
 
 	tmp = getKeyValue("PATH", environ);
-	tmp_args = tokenizer(&tmp, ":");
+	tmp_env = _stralloc(1, tmp);
+ 	tmp_args = tokenizer(&tmp_env, ":");
 	tmp = get_x_args(tmp_args, prog);
 
 	free(tmp_args);
-	return (tmp);
+	free(tmp_env);
+	return(tmp);
 }
 
 char *getKeyValue(char *key, char **environ)
@@ -53,11 +56,11 @@ char *get_x_args(char **tmp_args, char *prog)
 	int i = 1;
 	char *tmp;
 
-	tmp = allocate_strings(3, tmp_args[0], "/", prog);
+	tmp = _stralloc(3, tmp_args[0], "/", prog);
 	while (access(tmp, X_OK) == -1 && tmp_args[i] != NULL)
 	{
 		free(tmp);
-		tmp = allocate_strings(3, tmp_args[i], "/", prog);
+		tmp = _stralloc(3, tmp_args[i], "/", prog);
 		i++;
 	}
 	if (tmp_args[i] == NULL)
@@ -66,22 +69,22 @@ char *get_x_args(char **tmp_args, char *prog)
 		return (tmp);
 }
 
-char *allocate_strings (int count, ...)
+char *_stralloc (int count, ...)
 {
 	va_list list;
 	char *tmp_arg;
 	char *tmp_ptr;
 	char *tmp_return;
-	int sLen;
-	int aLen;
+	int string_len;
+	int arg_len;
 
 	va_start(list, count);
 
 	tmp_arg = va_arg(list, char *);
 	count--;
-	aLen = _strlen(tmp_arg);
+	arg_len = _strlen(tmp_arg);
 
-	tmp_return = malloc(sizeof(char) * aLen + 1);
+	tmp_return = malloc(sizeof(char) * arg_len + 1);
 	if (tmp_return == NULL)
 		exit (EXIT_FAILURE);
 
@@ -89,16 +92,20 @@ char *allocate_strings (int count, ...)
 
 	while (count != 0)
 	{
-		tmp_arg = va_arg(list, char *), count--;
-		sLen = _strlen(tmp_return);
-		aLen = _strlen(tmp_arg);
+		tmp_arg = va_arg(list, char *);
+		count--;
+		string_len = _strlen(tmp_return);
+		arg_len = _strlen(tmp_arg);
 
-		tmp_ptr = malloc(sizeof(char) * (sLen + aLen) + 1);
+		tmp_ptr = malloc(sizeof(char) * (string_len + arg_len) + 1);
 		if (tmp_ptr == NULL)
 			perror("check if second malloc failed");
 
 		if (tmp_return != NULL)
-			_strcpy(tmp_ptr, tmp_return), free(tmp_return);
+		{
+			_strcpy(tmp_ptr, tmp_return);
+			free(tmp_return);
+		}
 		_strcat(tmp_ptr, tmp_arg);
 		tmp_return = tmp_ptr;
 	}

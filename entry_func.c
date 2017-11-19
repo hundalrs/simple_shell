@@ -2,7 +2,11 @@
 
 int main()
 {
-        create_instance();
+	int status;
 
-        return (EXIT_SUCCESS);
+	do {
+		status = main_shell();
+	} while (status != EXIT_SHELL);
+
+        return (1);
 }
