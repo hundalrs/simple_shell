@@ -1,42 +1,59 @@
 #include "holberton.h"
 
-char **tokenizer (char **buffer)
+char **tokenizer(char **buf, char *pattern)
 {
-        char *tok;
-	char **_argv;
-        int i;
+	int i = 1;
+	char *tok;
+	char **args;
+	int Tokcount;
 
-        tok = strtok (*buffer, " \n\t");
-        if (tok == NULL)
-                perror ("Could not tokenize commands");
-        _argv = malloc(sizeof(char *) * 2);
-        if (_argv == NULL)
-                exit (0);
+	Tokcount = countToks(*buf, pattern);
 
-        _argv[0] = tok;
-        i = 1;
-        while (tok != NULL)
-        {
-                tok = strtok(NULL, " \n\t");
-                if (tok != NULL)
-                {
-			_argv = realloc(_argv, sizeof (char*) * (i + 2));
-			if (_argv == NULL)
-                        {
-                                free (buffer);
-                                perror("Could not realloc");
-                                exit (0);
-                        }
-                        _argv[i] = tok;
-                        i++;
-                }
-        }
-        _argv[i] = NULL;
-	return (_argv);
+	tok = strtok(*buf, pattern);
+	if (tok == NULL)
+	{
+		perror("no command passed: ");
+		exit(EXIT_FAILURE);
+	}
+	args = malloc(sizeof(char *) * (Tokcount + 1));
+	if (args == NULL)
+	{
+		perror("Error in Allocation");
+		exit(EXIT_FAILURE);
+	}
+	args[0] = tok;
+
+	while (tok != NULL)
+	{
+		tok = strtok(NULL, pattern);
+		if (tok != NULL)
+			args[i] = tok, i++;
+	}
+	args[i] = NULL;
+	return (args);
+}
+
+int countToks(char *str, char *delim)
+{
+	int i = 0, j = 0;
+	int count = 0;
+
+	while (delim[i] != '\0')
+	{
+		while (str[j] != '\0')
+		{
+			if (delim[i] == str[j] && str[j + 1] != delim[i])
+				count++;
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	return (count);
 }
 
 
-void _exec_process(char **_argv)
+void _exec_process(char *_arg, char **_args)
 {
 
         pid_t pid;
@@ -47,7 +64,7 @@ void _exec_process(char **_argv)
                 perror("Could not fork");
         if (pid == 0)
         {
-                if (execve(_argv[0], _argv, NULL) == -1)
+                if (execve(_arg, _args, NULL) == -2)
                 {
                         perror("error in execute command");
                 }

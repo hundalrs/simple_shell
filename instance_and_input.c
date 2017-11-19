@@ -3,56 +3,106 @@
 void create_instance()
 {
         pid_t pid;
+	int status;
+	size_t stat;
 
         pid = fork();
+
+	if (pid == -1)
+	{
+		perror("Cannot fork process");
+		exit (EXIT_FAILURE);
+	}
         if (pid == 0)
 	{
-		main_shell();
+		stat = main_shell();
+		switch (stat) {
+		case 3:
+			exit(0);
+			break;
+		default:
+			exit(1);
+		}
 	}
-        else if (pid == -1)
-                perror("Cannot fork process");
-        else
-        {
-                wait(NULL);
-                create_instance();
-        }
+	wait (&status);
+	stat = WEXITSTATUS (status);
+	if (stat)
+		create_instance();
+	else
+		return;
 }
 
-void main_shell()
+int main_shell()
 {
 	int i = 0;
-        char *buffer = NULL;
+        char *buffer = NULL, *path = NULL;
         size_t bufsize = 0;
-	char **_argv;
+	char **_argv = NULL;
+	ssize_t exit_check;
+	unsigned int stat = DEFAULT;
 
 	builtin funcs[] = {
 		{"env", print_env},
-		{"exit", _exiting},
+//		{"exit", _exiting},
 		{NULL, NULL}
 		};
 
         write(STDOUT_FILENO, "#cisfun$ ", 9);
 
-        getline (&buffer, &bufsize, stdin);
+	exit_check = getline (&buffer, &bufsize, stdin);
+	if (exit_check == -1)
+		stat = EXIT_SHELL;
 
-        _argv = tokenizer(&buffer);
-
-	while (funcs[i].command && access(_argv[0], X_OK) == -1)
+	if (stat == DEFAULT)
 	{
-		if (_strcmp (_argv[0], funcs[i].command) == 0)
+		_argv = tokenizer(&buffer, " \n\t\r");
+
+		while (funcs[i].command && access(_argv[0], X_OK) == -1)
 		{
-			funcs[i].f(_argv);
-			break;
+			if (_strcmp (_argv[0], funcs[i].command) == 0)
+			{
+				funcs[i].f(_argv);
+				stat = BUILTIN;
+				break;
+			}
+			i++;
 		}
-		i++;
 	}
-	if (_argv[0] != NULL)
-		_exec_process(_argv);
 
-	wait(NULL);
+	if (stat == DEFAULT)
+	{
+		//set stat = NEED_PATH or USED_PATH
+		stat = is_arg_ready(_argv[0]) ? NEED_PATH : USED_PATH;
+	}
 
-        free(buffer);
-        free(_argv);
+	if (stat == NEED_PATH)
+	{
+		path = getPathArgs(_argv[0], environ);
+		stat = USED_PATH;
+	}
+	if (stat == USED_PATH)
+	{
+		//change this
+		_exec_process(path ? path : _argv[0], _argv);
+		wait(NULL);
+	}
+	if (path != NULL)
+		free(path);
+	if (buffer != NULL)
+		free(buffer);
+	if (_argv != NULL)
+		free(_argv);
+
+	return (stat);
+}
+
+int is_arg_ready (char *_argv)
+{
+	if (access(_argv, X_OK) == -1)
+		return (4);
+	else
+		return (2);
+
 }
 
 void _exiting(char**_argv)
