@@ -31,7 +31,9 @@ To enter the interactive mode of my Simple Shell, you can run the executable:
 Otherwise, you can enter a non-interactive mode by using echo as specified
 below:
 
+```
 echo "ls -l" | ./hsh
+```
 
 ## Functionality
 
