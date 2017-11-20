@@ -10,17 +10,17 @@ this project handles botht the "env" and "exit" built-in.
 Moving forward, I plan to clean up the code to simplify it and add more
 functionality to increase the number of builtins.
 
-Getting Started
+## Getting Started
 
 To get the shell running on your local machine, please clone the repo and have
 everything specified in the prerequisites section.
 
-Prerequisites
+## Prerequisites
 
 Ubuntu 14.04 LTS
 gcc 4.8.4(-Wall, -Werror, -Wextra, and -pedantic flags)
 
-Running the tests
+## Running the tests
 
 To enter the interactive mode of my Simple Shell, you can run the executable:
 
@@ -31,34 +31,30 @@ below:
 
 echo "ls -l" | ./hsh
 
-Functionality
+## Functionality
 
 In the current iteration, there are only certain commands that works and below I
 will specify the ones that will successfully work.
 
--Builtins
-	-exit
-	-env
--$PATH Commands
+1. Builtins
+	* exit
+	* env
+2. $PATH Commands
 
-Moving Forward
+## Moving Forward
 
 In the near future, I plan to add additional builtins like cd as well as handle
 comments, the help builtin, and the history builtin.
 
-Work on Your Own Shell
+## Work on Your Own Shell
 
 You are free to fork this project and add any additionally functionality you
 would like.
 
-Versioning
-
-We use SemVer for versioning. For the versions available, see the tags on this repository.
-
-Authors
+## Authors
 
 Ramandeep Hundal - Holberton School
 
-License
+## License
 
 The Simple Shell is released under the MIT License.
