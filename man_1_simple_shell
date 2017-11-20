@@ -1,0 +1,35 @@
+.TH HSH 1 "20-November-2017" "Unix" "Simple Shell Man Page"
+.SH NAME
+.B hsh - holberton shell (command line interpreter)
+.SH SYNOPSIS
+.B hsh
+[command]
+[argument]
+.SH DESCRIPTION
+.B hsh
+is a command line interpreter that can be used in both an interactive and non-
+interative mode. The user should be able to enter a command from the terminal
+and have these basic commands executed.
+.SH INVOCATION
+If the "#cisfun" prompt shows up, this indicates the shell is in interactive
+mode and errors may be handled differently here opposed to entering commands in
+the standard shell. An example can seen below.
+.PP
+#cisfun$ /bin/pwd
+.SH EXECUTION
+Upon execution, the shell will look for builtins first. Then, it will check if
+the user is using the relative or absolute path to execute the command if the
+the command is not a builtin. Finally, it will execute the command.
+.SH ARGUMENTS
+For basic shell commands such as ls or cat, the shell can take arguments. These
+arguments will be tokenized by the shell and then run. As shown below.
+.PP
+#cisfun$ ls -la
+.SH PATH
+There are two ways of entering a command in the shell. Either using the absolute
+path or relative path. If the absolute path is not entered, the shell will find
+the absolute path itself and execute the command.
+.SH AUTHOR
+Ramandeep Hundal, rshundal11@gmail.com
+.SH BUGS
+Can be reported at rshundal11@gmail.com
