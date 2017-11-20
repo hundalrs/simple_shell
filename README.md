@@ -17,8 +17,8 @@ everything specified in the prerequisites section.
 
 ## Prerequisites
 
-Ubuntu 14.04 LTS
-gcc 4.8.4(-Wall, -Werror, -Wextra, and -pedantic flags)
+* Ubuntu 14.04 LTS
+* gcc 4.8.4(-Wall, -Werror, -Wextra, and -pedantic flags)
 
 ## Running the tests
 
