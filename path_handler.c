@@ -1,5 +1,11 @@
 #include "holberton.h"
 
+/**
+ * getPathArgs - main function that calls other funcs for PATH
+ * Return: returns PATH
+ * @prog: program
+ * @environ: environment
+ */
 char *getPathArgs(char *prog, char **environ)
 {
 	char *tmp;
@@ -8,14 +14,20 @@ char *getPathArgs(char *prog, char **environ)
 
 	tmp = getKeyValue("PATH", environ);
 	tmp_env = _stralloc(1, tmp);
- 	tmp_args = tokenizer(&tmp_env, ":");
+	tmp_args = tokenizer(&tmp_env, ":");
 	tmp = get_x_args(tmp_args, prog);
 
 	free(tmp_args);
 	free(tmp_env);
-	return(tmp);
+	return (tmp);
 }
 
+/**
+ * getKeyValue - sets pointer to first char
+ * Return: returns pointer to first char
+ * @key: key
+ * @environ: value
+ */
 char *getKeyValue(char *key, char **environ)
 {
 	int i = 0;
@@ -31,7 +43,12 @@ char *getKeyValue(char *key, char **environ)
 	return (tmp);
 }
 
-
+/**
+ * _strstr - locates a substring
+ * Return: substring
+ * @haystack: first string
+ * @needle: substring to test against
+ */
 char *_strstr(char *haystack, char *needle)
 {
 	while (*haystack)
@@ -51,6 +68,12 @@ char *_strstr(char *haystack, char *needle)
 	return (NULL);
 }
 
+/**
+ * get_x_args - gets args
+ * Return: return tmp if not equal to NULL
+ * @tmp_args: temp args
+ * @prog: program
+ */
 char *get_x_args(char **tmp_args, char *prog)
 {
 	int i = 1;
@@ -69,7 +92,12 @@ char *get_x_args(char **tmp_args, char *prog)
 		return (tmp);
 }
 
-char *_stralloc (int count, ...)
+/**
+ * _stralloc - mallocs proper amount of space
+ * Return: pointer
+ * @count: number of args
+ */
+char *_stralloc(int count, ...)
 {
 	va_list list;
 	char *tmp_arg;
@@ -86,14 +114,13 @@ char *_stralloc (int count, ...)
 
 	tmp_return = malloc(sizeof(char) * arg_len + 1);
 	if (tmp_return == NULL)
-		exit (EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 
 	_strcpy(tmp_return, tmp_arg);
 
 	while (count != 0)
 	{
-		tmp_arg = va_arg(list, char *);
-		count--;
+		tmp_arg = va_arg(list, char *), count--;
 		string_len = _strlen(tmp_return);
 		arg_len = _strlen(tmp_arg);
 

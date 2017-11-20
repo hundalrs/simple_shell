@@ -1,80 +1,83 @@
 #include "holberton.h"
 
-int main_shell()
+/**
+ * main_shell - calls functions and prints prompt
+ * Return: returns status
+ */
+int main_shell(void)
 {
-	int i = 0;
-        char *buffer = NULL, *path = NULL;
-        size_t bufsize = 0;
+	int i = 0, exit_check;
+	char *buffer = NULL, *path = NULL;
+	size_t bufsize = 0;
 	char **_argv = NULL;
-	ssize_t exit_check;
 	unsigned int stat = DEFAULT;
-
 	builtin funcs[] = {
 		{"env", print_env},
-//		{"exit", _exiting},
+		{"exit", _exiting},
 		{NULL, NULL}
 		};
 
-        write(STDOUT_FILENO, "#cisfun$ ", 9);
-
-	exit_check = getline (&buffer, &bufsize, stdin);
+	write(STDOUT_FILENO, "#cisfun$ ", 9);
+	exit_check = getline(&buffer, &bufsize, stdin);
 	if (exit_check == -1)
 		stat = EXIT_SHELL;
 	if (exit_check == 1)
 		stat = START_OVER;
-
 	if (stat == DEFAULT)
 	{
-		_argv = tokenizer(&buffer, " \n\t\r");
-
-		while (funcs[i].command && access(_argv[0], X_OK) == -1)
+		_argv = tokenizer(&buffer, "\n\t\r ");
+		while ((funcs[i].command && access(_argv[0], X_OK) == -1))
 		{
-			if (_strcmp (_argv[0], funcs[i].command) == 0)
+			if ((_strcmp(_argv[0], funcs[i].command) == 0) &&
+			    (_strlen(_argv[0]) == _strlen(funcs[i].command)))
 			{
-				funcs[i].f(_argv);
-				stat = BUILTIN;
+				stat = funcs[i].f(_argv);
 				break;
 			}
 			i++;
 		}
 	}
-
 	if (stat == DEFAULT)
 	{
 		if (access(_argv[0], X_OK) == -1)
 			path = getPathArgs(_argv[0], environ);
 		_exec_process(path ? path : _argv[0], _argv);
 	}
-
-	if (stat == EXIT_SHELL)
-		write (STDOUT_FILENO, "\n", 1);
-
-	free(path);
-	free(buffer);
-	free(_argv);
-
+	free(path); free(buffer); free(_argv);
 	return (stat);
 }
 
-void _exiting(char**_argv)
+/**
+ * _exiting - exit shell
+ * Return: returns status(3) to exit shell
+ * @_argv: array of tokenized strings
+ */
+int _exiting(char **_argv)
 {
 	(void) _argv;
-	_exit(1);
+	return (3);
 }
 
-void print_env(char **_argv)
+/**
+ * print_env - prints environment
+ * Return: returns 1 which is default
+ * @_argv: array of tokenized strings
+ */
+int print_env(char **_argv)
 {
 	(void) _argv;
-	int i = 0, j = 0;
+	int i = 0, j;
 
 	while (environ[i])
 	{
+		j = 0;
 		while (environ[i][j])
 		{
 			_putchar(environ[i][j]);
 			j++;
 		}
-		i++;
 		_putchar('\n');
+		i++;
 	}
+	return (1);
 }

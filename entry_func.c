@@ -1,6 +1,10 @@
 #include "holberton.h"
 
-int main()
+/**
+ * main - entry function
+ * Return: 1 if successful
+ */
+int main(void)
 {
 	int status;
 
@@ -8,5 +12,5 @@ int main()
 		status = main_shell();
 	} while (status != EXIT_SHELL);
 
-        return (1);
+	return (1);
 }

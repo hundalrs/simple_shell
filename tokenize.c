@@ -1,5 +1,11 @@
 #include "holberton.h"
 
+/**
+ * tokenizer - tokenizes arguments
+ * Return: arguments
+ * @buf: buffer to tokenizer
+ * @pattern: delimiters for tokenization
+ */
 char **tokenizer(char **buf, char *pattern)
 {
 	int i = 1;
@@ -33,6 +39,12 @@ char **tokenizer(char **buf, char *pattern)
 	return (args);
 }
 
+/**
+ * countToks - count number of tokens
+ * Return: value of number of tokens
+ * @str: string
+ * @delim: delimiter
+ */
 int countToks(char *str, char *delim)
 {
 	int i = 0, j = 0;
@@ -52,24 +64,28 @@ int countToks(char *str, char *delim)
 	return (count);
 }
 
-
+/**
+ * _exec_process - execute command and create child process
+ * @_arg: arg
+ * @_args: array of args
+ */
 void _exec_process(char *_arg, char **_args)
 {
 
-        pid_t pid;
+	pid_t pid;
 
-        pid = fork();
+	pid = fork();
 
-        if (pid == -1)
-                perror("Could not fork");
-        if (pid == 0)
-        {
-                if (execve(_arg, _args, NULL) == -1)
-                {
-                        perror("error in execute command");
-                }
-                exit(EXIT_FAILURE);
-        }
+	if (pid == -1)
+		perror("Could not fork");
+	if (pid == 0)
+	{
+		if (execve(_arg, _args, NULL) == -1)
+		{
+			perror("error in execute command");
+		}
+		exit(EXIT_FAILURE);
+	}
 	else
 	{
 		wait(NULL);
