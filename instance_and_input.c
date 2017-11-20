@@ -20,7 +20,7 @@ int main_shell(void)
 	write(STDOUT_FILENO, "#cisfun$ ", 9);
 	exit_check = getline(&buffer, &bufsize, stdin);
 	if (exit_check == -1)
-		stat = EXIT_SHELL;
+		stat = EXIT_SHELL; _putchar('\n');
 	if (exit_check == 1)
 		stat = START_OVER;
 	if (stat == DEFAULT)
