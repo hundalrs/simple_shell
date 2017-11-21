@@ -66,7 +66,8 @@ int _exiting(char **_argv)
 int print_env(char **_argv)
 {
 	(void) _argv;
-	int i = 0, j;
+	int i = 0;
+	int j;
 
 	while (environ[i])
 	{
