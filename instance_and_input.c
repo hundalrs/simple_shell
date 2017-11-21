@@ -6,8 +6,8 @@
  */
 int main_shell(void)
 {
-	int i = 0, exit_check;
-	char *buffer = NULL, *path = NULL;
+	int i = 0; int exit_check;
+	char *buffer = NULL; char *path = NULL;
 	size_t bufsize = 0;
 	char **_argv = NULL;
 	unsigned int stat = DEFAULT;
