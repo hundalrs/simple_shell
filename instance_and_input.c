@@ -20,7 +20,7 @@ int main_shell(void)
 	write(STDOUT_FILENO, "#cisfun$ ", 9);
 	exit_check = getline(&buffer, &bufsize, stdin);
 	if (exit_check == -1)
-		stat = EXIT_SHELL; _putchar('\n');
+		stat = EXIT_SHELL;
 	if (exit_check == 1)
 		stat = START_OVER;
 	if (stat == DEFAULT)
@@ -63,12 +63,12 @@ int _exiting(char **_argv)
  * Return: returns 1 which is default
  * @_argv: array of tokenized strings
  */
-int print_env(char **_argv)
+int print_env(__attribute ((unused)) char **_argv)
 {
-	(void) _argv;
-	int i = 0;
+	int i;
 	int j;
 
+	i = 0;
 	while (environ[i])
 	{
 		j = 0;
