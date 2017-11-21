@@ -20,7 +20,7 @@ everything specified in the prerequisites section.
 * Ubuntu 14.04 LTS
 * gcc 4.8.4(-Wall, -Werror, -Wextra, and -pedantic flags)
 
-## Running the tests
+## Running the shell
 
 To enter the interactive mode of my Simple Shell, you can run the executable:
 
